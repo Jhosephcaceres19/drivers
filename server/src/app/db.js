@@ -1,28 +1,30 @@
-require("dotenv").config();
-const { Sequelize } = require("sequelize");
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
-const { default: Teams } = require("../models/Teams");
-const Drivers = require("../models/Drivers");
+import dotenv from 'dotenv';
+import { Sequelize } from 'sequelize';
+import defineDriverModel from '../models/Drivers.js'; // Usa '.js' si es un módulo ES
+import defineTeamModel from '../models/Teams.js';     // Usa '.js' si es un módulo ES
 
-const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-  {
-    logging: false,
-    native: false,
-  }
-);
+dotenv.config();
 
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
-//ejecutar los modelos
-Drivers(sequelize)
-Teams(sequelize)
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+  logging: console.log('Connected to DB...'),
+  native: false,
+});
 
-// Definir la relación muchos-a-muchos
-const {dirvers, teams} = sequelize.models;
-Drivers.belongsToMany(Teams, { through: 'DriverTeams' });
-Teams.belongsToMany(Drivers, { through: 'DriverTeams' });
+// Definición de modelos
+defineDriverModel(sequelize);
+defineTeamModel(sequelize);
 
-module.exports = {
-    ...sequelize.models,
-    conn: sequelize,
-  };
+// Relaciones
+const { Driver, Team } = sequelize.models;
+
+Driver.belongsToMany(Team, { through: 'driver_team' });
+Team.belongsToMany(Driver, { through: 'driver_team' });
+
+// Exportar los modelos y la conexión
+export {
+  Driver,
+  Team,
+  sequelize as conn
+};

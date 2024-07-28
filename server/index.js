@@ -1,12 +1,10 @@
-const { conn } = require("./app/db");
-require("dotenv").config();
+import axios from 'axios';
+import server from './src/app/app.js';
+import { conn } from './src/app/db.js';
+const PORT = 3001;
 
-const app = require("./app/app");
-
-const port = process.env.PORT || 3001;
-
-conn.sync({ force: true }).then(() => {
-  app.listen(port, () => {
-    console.log(`server runing on port ${port}`);
+conn.sync({ force: true }).then(() => { 
+  server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
   });
-});
+}).catch(error => console.error(error));

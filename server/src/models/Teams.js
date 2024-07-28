@@ -1,16 +1,24 @@
-import { DataTypes } from "sequelize"; // Importa DataTypes
+import { DataTypes } from 'sequelize';
 
-export default (sequelize) => {
-  return sequelize.define("Teams", {
-    // Usa 'return' para devolver el modelo
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
+// Define el modelo de Team
+const Team = (sequelize) => {
+  sequelize.define(
+    'Team',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        unique: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  });
+    { timestamps: false }
+  );
 };
+
+export default Team;

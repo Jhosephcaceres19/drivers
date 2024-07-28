@@ -1,0 +1,30 @@
+/* Define la clase de estilo para el gradiente */
+.gradient-background {
+  background: linear-gradient(to left, #50027e, #000000);
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  color: #ffbc00;
+  backdrop-filter: blur(50px);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  justify-content: space-around;
+}
+
+/* Asegura que los enlaces no tengan decoración de texto */
+.gradient-background a {
+  text-decoration: none;
+  color: #ffbc00; /* Asegura que el color del texto sea el mismo que el especificado para los h1 */
+}
+
+h1 {
+  color: #ffbc00;
+}
+
+.h1-home {
+  /* Este selector no es necesario si sólo estás ajustando los estilos de los enlaces globalmente */
+}
