@@ -941,7 +941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.1, express@npm:^4.18.2":
+"express@npm:^4.17.1, express@npm:^4.19.2":
   version: 4.19.2
   resolution: "express@npm:4.19.2"
   dependencies:
@@ -2306,7 +2306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.10.0":
+"pg@npm:^8.12.0":
   version: 8.12.0
   resolution: "pg@npm:8.12.0"
   dependencies:
@@ -2753,12 +2753,12 @@ __metadata:
     concurrently: "npm:^8.0.1"
     cors: "npm:^2.8.5"
     dotenv: "npm:^16.0.3"
-    express: "npm:^4.18.2"
+    express: "npm:^4.19.2"
     json-server: "npm:^0.17.3"
     morgan: "npm:^1.10.0"
     nodemon: "npm:^2.0.22"
     npm-run-all: "npm:^4.1.5"
-    pg: "npm:^8.10.0"
+    pg: "npm:^8.12.0"
     pg-hstore: "npm:^2.3.4"
     sequelize: "npm:^6.31.1"
   languageName: unknown
