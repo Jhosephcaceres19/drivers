@@ -18,7 +18,7 @@ driversRouter.post('/', postHandlerDriver);
 //     "forename": "John",
 //     "surname": "Doe",
 //     "description": "A new driver",
-//     "image": "http://example.com/image.jpg",
+//     "image": "https://pbs.twimg.com/profile_images/1301250347822968833/VgxlK9pY_200x200.jpg",
 //     "nationality": "American",
 //     "teams": ["Team A", "Team B"],
 //     "dob": "1990-01-01"
