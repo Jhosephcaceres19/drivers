@@ -39,7 +39,7 @@ const functControllerGen = async () => {
       teams = "No team registration"
     } = obj;
 
-    const url = image.url || "https://cdn.pixabay.com/photo/2013/07/12/15/36/motorsports-150157_960_720.png";
+    const url = image.url || "https://pbs.twimg.com/profile_images/1301250347822968833/VgxlK9pY_200x200.jpg";
     const teamsArr = Array.isArray(teams) ? teams.split(',').map(e => e.trim()) : [teams];
 
     return new Driver001(id, forename, surname, description, url, nationality, teamsArr, dob);

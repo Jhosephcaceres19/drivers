@@ -1,0 +1,36 @@
+.content-driver {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacio entre los elementos */
+    justify-content: center;
+    
+  }
+  
+  .driver-card {
+    border: 2px solid rgb(0,0, 0, 4); 
+    width: calc(27.333% - 90px); 
+    box-sizing: border-box; 
+    background: linear-gradient(to right, #50027e, #000000);
+    color: white; 
+    text-align: center;
+    padding-bottom: 2px;
+    border-radius: 20px;
+    height: 380px;
+  }
+  
+  .driver-card img {
+    width: 100%;
+    height: 70%;
+    display: block;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  
+  .driver-card h2 {
+    margin: 10px 0;
+  }
+  
+  .driver-card p {
+    margin: 5px 0;
+  }
+  

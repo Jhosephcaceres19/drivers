@@ -1,8 +1,12 @@
-.app-css {
+.home {
+  color: white;
   height: 100%;
   min-height: 100vh; /* Asegura que el fondo cubra al menos el 100% de la altura de la ventana */
   margin: 0; /* Elimina el margen por defecto del body si es necesario */
   left: 0%;
   right: 0;
-  
+
+}
+.content-home{
+    margin-top: 8%; 
 }

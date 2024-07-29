@@ -4,6 +4,7 @@ import { getHandlerDrivers, getHandlerDriversById, getHandlerDriversByName, post
 const driversRouter = Router();
 
 driversRouter.get('/', getHandlerDrivers);
+//http://localhost:3001/drivers
 
 driversRouter.get('/driver/', getHandlerDriversByName);
 //http://localhost:3001/drivers/driver?name=Nick
@@ -12,6 +13,7 @@ driversRouter.get('/:id', getHandlerDriversById);
 //http://localhost:3001/drivers/1
 
 driversRouter.post('/', postHandlerDriver);
+////http://localhost:3001/drivers
 // {
 //     "forename": "John",
 //     "surname": "Doe",

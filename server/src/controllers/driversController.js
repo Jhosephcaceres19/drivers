@@ -20,7 +20,7 @@ const driversController = async () => {
           dob,
         } = obj;
 
-        const url = obj.image?.url || "https://cdn.pixabay.com/photo/2013/07/12/15/36/motorsports-150157_960_720.png";
+        const url = obj.image?.url || "https://pbs.twimg.com/profile_images/1301250347822968833/VgxlK9pY_200x200.jpg";
 
         const teamsArr = obj.teams ? obj.teams.split(',').map((e) => e.trim()) : ["No team registration"];
 
