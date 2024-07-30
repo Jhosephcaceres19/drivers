@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Drivers.css";
-import defaultImage from "../assets/image/depool.jpg"; // Asegúrate de que esta ruta sea correcta
+import defaultImage from "../assets/image/depool.jpg";
 
 export const Drivers = ({ drivers, currentPage, totalPages, onPageChange }) => {
   const handleError = (e) => {
     e.target.src = defaultImage;
   };
 
-  // Asegúrate de que 'drivers' sea un array
   if (!Array.isArray(drivers)) {
     return <div>No hay conductores disponibles.</div>;
   }
@@ -31,21 +30,18 @@ export const Drivers = ({ drivers, currentPage, totalPages, onPageChange }) => {
         ) : (
           <div>No se encontraron resultados.</div>
         )}
-
-        
       </div>
 
-      {/* Botones de paginación */}
       <div className="pagination">
-        <button 
-          onClick={() => onPageChange(currentPage - 1)} 
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
           Atrás
         </button>
         <span>Página {currentPage} de {totalPages}</span>
-        <button 
-          onClick={() => onPageChange(currentPage + 1)} 
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
           Siguiente

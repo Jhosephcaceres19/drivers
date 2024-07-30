@@ -5,15 +5,39 @@
   margin: 0; /* Elimina el margen por defecto del body si es necesario */
   left: 0%;
   right: 0;
-
 }
-.content-home{
-    margin-top: 8%; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.content-home {
+  margin-top: 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.addregister{
+.addregister {
   color: white;
+}
+.home-nav {
+  display: flex;
+  align-items: center;
+  gap: 300px;
+}
+
+.sea {
+  display: flex;
+  align-items: center;
+}
+.todos {
+  background: #007bff;
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 8px;
+}
+.b {
+  color: white;
+  text-decoration: none;
+}
+.filter-sort {
+  gap: 25px;
+  display: flex;
+  justify-content: center;
 }
