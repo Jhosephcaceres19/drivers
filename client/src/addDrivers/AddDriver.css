@@ -11,7 +11,7 @@ body {
 
 /* Form styling */
 form {
-  background-color: #fff;
+  background: linear-gradient(to right, #50027e, #000000);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@ form {
   gap: 15px; /* Espaciado entre los campos */
   align-items: center;
   justify-content: center;
-  
+  color: white;
 }
 
 /* Styling for form groups */

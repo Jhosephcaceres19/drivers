@@ -28,6 +28,7 @@ export const Home = () => {
     try {
       const response = await Service.allDrivers();
       const driversData = response.respuesta;
+      console.log("Fetched drivers:", driversData); // Debug
       setDrivers(driversData);
       setFilteredDrivers(driversData);
       setTeams([...new Set(driversData.flatMap((driver) => driver.teams))]);
@@ -97,8 +98,8 @@ export const Home = () => {
   };
 
   const getPaginatedDrivers = () => {
-    const startIndex = (currentPage - 1) * 9;
-    const endIndex = startIndex + 9;
+    const startIndex = (currentPage - 1) * 9; // Cambiado de 9 a 15
+    const endIndex = startIndex + 9; // Cambiado de 9 a 15
     return filteredDrivers.slice(startIndex, endIndex);
   };
 
@@ -114,17 +115,15 @@ export const Home = () => {
       <NavBar />
       <div className="content-home">
         <div className="home-nav">
-          
           <div className="filter-sort">
             <div className="filter-sort">
               <label>Filtrar por equipo:</label>
-              
               <select
                 value={selectedTeam}
                 onChange={(e) => setSelectedTeam(e.target.value)}
                 className="todos"
               >
-                <option value="" >Todos</option>
+                <option value="">Todos</option>
                 {teams.map((team) => (
                   <option key={team} value={team}>
                     {team}
@@ -140,22 +139,22 @@ export const Home = () => {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="todos"
               >
-                <option value="name" >Nombre</option>
-                <option value="dob" >Fecha de nacimiento</option>
+                <option value="name">Nombre</option>
+                <option value="dob">Fecha de nacimiento</option>
               </select>
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
                 className="todos"
               >
-                <option value="asc" >Ascendente</option>
-                <option value="desc" >Descendente</option>
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
               </select>
             </div>
           </div>
           <div className="filter-sort">
             <div className="search2">
-              <button ><Link to="/add" className="b">Registrar..</Link></button>
+              <button><Link to="/add" className="b">Registrar..</Link></button>
             </div>
             <input
               type="text"

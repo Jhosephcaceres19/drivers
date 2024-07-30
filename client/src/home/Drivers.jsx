@@ -8,6 +8,8 @@ export const Drivers = ({ drivers, currentPage, totalPages, onPageChange }) => {
     e.target.src = defaultImage;
   };
 
+  console.log("Drivers data:", drivers); // Verifica los datos recibidos
+
   if (!Array.isArray(drivers)) {
     return <div>No hay conductores disponibles.</div>;
   }
@@ -23,7 +25,7 @@ export const Drivers = ({ drivers, currentPage, totalPages, onPageChange }) => {
               className="driver-card"
             >
               <img src={driver.image} alt={driver.name} onError={handleError} />
-              <h2>NOMBRE: {driver.name}</h2>
+              <h2>NOMBRE: {driver.name ? driver.name: driver.forename}</h2> {/* Valor predeterminado si `name` está vacío */}
               <p>EQUIPO: {driver.teams.join(", ")}</p>
             </Link>
           ))

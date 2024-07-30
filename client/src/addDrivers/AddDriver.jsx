@@ -60,7 +60,7 @@ export const AddDriver = () => {
       <form onSubmit={addDriver}>
         <div>
           <label>
-            Forename:
+            NOMBRE:
             <input
               type="text"
               name="forename"
@@ -71,7 +71,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            Surname:
+            APELLIDO:
             <input
               type="text"
               name="surname"
@@ -82,7 +82,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            Description:
+            DESCRIPCION:
             <input
               type="text"
               name="description"
@@ -93,7 +93,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            Image URL:
+            IMAGEN URL:
             <input
               type="text"
               name="image"
@@ -104,7 +104,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            Nationality:
+            NACIONALIDAD:
             <input
               type="text"
               name="nationality"
@@ -115,7 +115,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            Teams (comma separated):
+            TEAMS (separar por comas):
             <input
               type="text"
               name="teams"
@@ -126,7 +126,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            Date of Birth:
+            FECHA DE NACIMINETO:
             <input
               type="date"
               name="dob"
@@ -135,7 +135,7 @@ export const AddDriver = () => {
             />
           </label>
         </div>
-        <button type="submit">Add Driver</button>
+        <button type="submit">ADD DRIVER</button>
       </form>
     </div>
   );
