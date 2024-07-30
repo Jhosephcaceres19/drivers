@@ -6,7 +6,7 @@ import Service from "../service/Service";
 import defaultImage from "../assets/image/depool.jpg";
 
 export const Detail = () => {
-  const { id } = useParams();
+  const { id, idDB } = useParams(); // Obtén ambos parámetros de la URL
   const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,13 +18,25 @@ export const Detail = () => {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const response = await Service.driversId(id);
-        console.log(response); // Verifica la estructura de la respuesta
+        let driverId = id;
+        let response = await Service.driversId(driverId);
+        
+        if (response && response.respuesta && response.respuesta.error) {
+          // Si el ID no es válido, intenta con idDB
+          if (idDB) {
+            driverId = idDB;
+            response = await Service.driversId(driverId);
+          } else {
+            throw new Error('No se encontraron datos para el driver.');
+          }
+        }
+
         if (response && response.respuesta) {
           setDriver(response.respuesta); // Accede al detalle del driver
         } else {
           throw new Error('No se encontraron datos para el driver.');
         }
+        
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener los detalles del driver", error);
@@ -32,8 +44,9 @@ export const Detail = () => {
         setLoading(false);
       }
     };
+    
     fetchDetail();
-  }, [id]);
+  }, [id, idDB]); // Dependencias para la actualización
 
   if (loading) {
     return <div>Cargando...</div>; // Mensaje de carga mientras se obtienen los datos

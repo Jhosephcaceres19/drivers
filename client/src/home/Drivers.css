@@ -1,36 +1,54 @@
 .content-driver {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Espacio entre los elementos */
-    justify-content: center;
-    
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre los elementos */
+  justify-content: center;
+}
+
+/* Ajusta el tamaño mínimo de las tarjetas para que no se reduzcan demasiado */
+.driver-card {
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  width: calc(33.333% - 20px); /* Ajusta el tamaño para pantallas grandes */
+  min-width: 300px; /* Ajusta el ancho mínimo para evitar que se reduzca demasiado */
+  box-sizing: border-box;
+  background: linear-gradient(to right, #50027e, #000000);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 20px;
+  height: 380px;
+  overflow: hidden;
+}
+
+/* Ajusta el ancho de la imagen dentro de la tarjeta */
+.driver-card img {
+  width: 100%;
+  height: 70%;
+  display: block;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.driver-card h2, .driver-card p {
+  margin: 5px 0;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 768px) {
   .driver-card {
-    border: 2px solid rgb(0,0, 0, 4); 
-    width: calc(27.333% - 90px); 
-    box-sizing: border-box; 
-    background: linear-gradient(to right, #50027e, #000000);
-    color: white; 
-    text-align: center;
-    padding-bottom: 2px;
-    border-radius: 20px;
-    height: 380px;
+    width: calc(50% - 20px); /* Ajusta el tamaño para pantallas medianas */
   }
-  
-  .driver-card img {
-    width: 100%;
-    height: 70%;
-    display: block;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+}
+
+@media (max-width: 480px) {
+  .driver-card {
+    width: calc(100% - 20px); /* Ajusta el tamaño para pantallas pequeñas */
   }
-  
-  .driver-card h2 {
-    margin: 10px 0;
-  }
-  
-  .driver-card p {
-    margin: 5px 0;
-  }
-  
+}
+
+.content-driver-main{
+  display: flex;
+  flex-direction: column;
+}
+
+
