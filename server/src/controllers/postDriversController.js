@@ -30,7 +30,7 @@ const postDriversController = async (forename, surname, description, image, nati
 
     // Si ya existe un conductor con la misma información, retorna un mensaje
     if (existingDriverDB) {
-      return `Driver ${forename} ${surname} is already in the database`;
+      return `Driver ${forename} ${surname} ya existe en el base de datos`;
     }
 
     const { data } = await axios.get(API);

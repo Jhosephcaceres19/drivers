@@ -6,6 +6,7 @@ import { Drivers } from "./Drivers";
 import { Link } from "react-router-dom";
 
 export const Home = () => {
+  // Estados para gestionar los datos de los conductores, filtros, y paginación
   const [drivers, setDrivers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDrivers, setFilteredDrivers] = useState([]);
@@ -16,33 +17,40 @@ export const Home = () => {
   const [sortBy, setSortBy] = useState("name");
   const [teams, setTeams] = useState([]);
 
+  // Efecto para cargar los datos de los conductores al montar el componente
   useEffect(() => {
     fetchDrivers();
   }, []);
 
+  // Efecto para aplicar filtros y ordenamientos cuando cambian los estados relacionados
   useEffect(() => {
     applyFiltersAndSorting();
   }, [selectedTeam, sortOrder, sortBy, drivers]);
 
+  // Función para obtener los datos de los conductores desde el servicio
   const fetchDrivers = async () => {
     try {
       const response = await Service.allDrivers();
       const driversData = response.respuesta;
-      console.log("Fetched drivers:", driversData); // Debug
+      console.log("Fetched drivers:", driversData);
       setDrivers(driversData);
       setFilteredDrivers(driversData);
+      // Extraer equipos únicos para los filtros
       setTeams([...new Set(driversData.flatMap((driver) => driver.teams))]);
-      setTotalPages(Math.ceil(driversData.length / 15));
+      setTotalPages(Math.ceil(driversData.length / 15)); // Establecer el número total de páginas
     } catch (error) {
       console.log("Error al cargar los conductores", error);
     }
   };
 
+  // Función para aplicar filtros y ordenamientos a los datos de los conductores
   const applyFiltersAndSorting = () => {
+    // Filtrar por equipo seleccionado
     let results = drivers.filter((driver) =>
       selectedTeam ? driver.teams.includes(selectedTeam) : true
     );
 
+    // Ordenar según el criterio seleccionado
     if (sortBy === "name") {
       results.sort((a, b) => {
         if (a.name < b.name) return sortOrder === "asc" ? -1 : 1;
@@ -58,10 +66,11 @@ export const Home = () => {
     }
 
     setFilteredDrivers(results);
-    setTotalPages(Math.ceil(results.length / 15));
-    setCurrentPage(1); // Reiniciar a la primera página
+    setTotalPages(Math.ceil(results.length / 15)); // Actualizar el número total de páginas después de filtrar y ordenar
+    setCurrentPage(1); // Reiniciar la página actual a la primera
   };
 
+  // Función para manejar la búsqueda de conductores por nombre
   const handleSearch = async () => {
     try {
       const response = await fetch(
@@ -88,26 +97,30 @@ export const Home = () => {
     }
   };
 
+  // Función para manejar el cambio en el campo de búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // Función para manejar el cambio de página en la paginación
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
 
+  // Función para obtener los conductores de la página actual
   const getPaginatedDrivers = () => {
-    const startIndex = (currentPage - 1) * 9; // Cambiado de 9 a 15
-    const endIndex = startIndex + 9; // Cambiado de 9 a 15
+    const startIndex = (currentPage - 1) * 15; // Cambiado de 9 a 15 para ajustar el número de elementos por página
+    const endIndex = startIndex + 15;
     return filteredDrivers.slice(startIndex, endIndex);
   };
 
+  // Función para limpiar la búsqueda y restablecer los filtros
   const handleClearSearch = () => {
     setSearchTerm("");
     setSelectedTeam("");
     setCurrentPage(1);
-    fetchDrivers(); // Re-fetch drivers to reset state
+    fetchDrivers(); // Volver a cargar los datos de los conductores para restablecer el estado
   };
 
   return (

@@ -21,6 +21,27 @@ const driversId = async (id) =>{
     const response = await api.get(`/drivers/${id}`)
     return response.data
 }
+const driversIdBd= async(idDB) =>{
+    const response = await api.get(`/drivers/idDB/${idDB}`)
+    return response.data
+}
+const driversAll = async (driver) => {
+    try {
+      if (driver.id) {
+        // Intenta buscar por id
+        return await driversId(driver.id);
+      } else if (driver.idDB) {
+        // Si no encuentra por id, busca por idDB
+        return await driversIdBd(driver.idDB);
+      } else {
+        throw new Error('No se encontró un identificador válido para el driver');
+      }
+    } catch (error) {
+      console.error('Error al obtener los detalles del driver', error);
+      throw error;
+    }
+  };
+
 
 const createDrivers = async(
     forename,
@@ -47,5 +68,7 @@ export default{
     allDrivers,
     search,
     driversId,
-    createDrivers
+    createDrivers,
+    driversIdBd,
+    driversAll
 }
