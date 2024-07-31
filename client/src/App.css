@@ -1,8 +1,25 @@
+/* App.css */
 .app-css {
   height: 100%;
   min-height: 100vh; /* Asegura que el fondo cubra al menos el 100% de la altura de la ventana */
   margin: 0; /* Elimina el margen por defecto del body si es necesario */
-  left: 0%;
-  right: 0;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column; /* Apila el texto y la imagen verticalmente */
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center; /* Centra el texto dentro del contenedor */
+  padding: 20px; /* Añade algo de espaciado alrededor del contenido */
+  gap: 20px;
+}
+
+.welcome img {
+  max-width: 100%; /* Asegura que la imagen se ajuste al contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
 }

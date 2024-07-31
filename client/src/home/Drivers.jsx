@@ -25,7 +25,7 @@ export const Drivers = ({ drivers, currentPage, totalPages, onPageChange }) => {
               className="driver-card"
             >
               <img src={driver.image} alt={driver.name} onError={handleError} />
-              <h2>NOMBRE: {driver.name ? driver.name: driver.forename}</h2> {/* Valor predeterminado si `name` está vacío */}
+              <h2>NOMBRE: {driver.name ? driver.name: driver.forename + ' '+driver.surname}</h2> {/* Valor predeterminado si `name` está vacío */}
               <p>EQUIPO: {driver.teams.join(", ")}</p>
             </Link>
           ))

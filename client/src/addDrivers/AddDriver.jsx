@@ -79,12 +79,12 @@ export const AddDriver = () => {
         formData.dob
       );
       if (response) {
-        alert("Driver created successfully");
+        alert("Driver creado correctamente");
         setFormData(initialFormData);
       }
     } catch (error) {
-      console.log("Error creating the driver:", error);
-      alert("Failed to create driver");
+      console.log("Error al crear el driver:", error);
+      alert("Fallo al crear el driver");
     }
   };
 
