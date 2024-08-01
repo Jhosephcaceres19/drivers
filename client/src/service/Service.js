@@ -1,6 +1,7 @@
 import api from "../api/api"
 
 const allDrivers = async()=>{
+  
     const response = await api.get('/drivers')
     const resultData = response.data;
     console.log(response.data)
