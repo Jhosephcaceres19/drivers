@@ -8,7 +8,7 @@ export const App = () => {
     <div className="app-css">
       <NavBar />
       <div className="welcome">
-        <h1>Bienvenido a Drivers</h1>
+        <h1>Bienvenido a Driver</h1>
         <img src={Image.r} alt="Raptor" />
       </div>
     </div>

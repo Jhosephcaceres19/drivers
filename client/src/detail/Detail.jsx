@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import "./Detail.css";
 import { NavBar } from "../navbar/NavBar";
 import Service from "../service/Service";
 import defaultImage from "../assets/image/depool.jpg";
+import { setSelectedDriver, setDriverLoading, setDriverError, clearDriverDetail } from '../redux/redux.js';
 
 export const Detail = () => {
   const { id, idDB } = useParams(); // Obtén ambos parámetros de la URL
-  const [driver, setDriver] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { selectedDriver, driverLoading, driverError } = useSelector(state => state.drivers);
 
   const handleError = (e) => {
     e.target.src = defaultImage; // Cambia la fuente de la imagen al predeterminado si falla
@@ -17,6 +18,8 @@ export const Detail = () => {
 
   useEffect(() => {
     const fetchDetail = async () => {
+      dispatch(setDriverLoading(true));
+      dispatch(clearDriverDetail()); // Limpiar el estado previo antes de cargar los nuevos datos
       try {
         let driverId = id;
         let response = await Service.driversId(driverId);
@@ -32,28 +35,32 @@ export const Detail = () => {
         }
 
         if (response && response.respuesta) {
-          setDriver(response.respuesta); // Accede al detalle del driver
+          dispatch(setSelectedDriver(response.respuesta)); // Establece los detalles del conductor en el estado
         } else {
           throw new Error('No se encontraron datos para el driver.');
         }
         
-        setLoading(false);
       } catch (error) {
         console.error("Error al obtener los detalles del driver", error);
-        setError("No se pudieron cargar los detalles del conductor.");
-        setLoading(false);
+        dispatch(setDriverError("No se pudieron cargar los detalles del conductor."));
+      } finally {
+        dispatch(setDriverLoading(false));
       }
     };
     
     fetchDetail();
-  }, [id, idDB]); // Dependencias para la actualización
+    
+    return () => {
+      dispatch(clearDriverDetail()); // Limpia el estado cuando el componente se desmonte
+    };
+  }, [id, idDB, dispatch]); // Dependencias para la actualización
 
-  if (loading) {
+  if (driverLoading) {
     return <div>Cargando...</div>; // Mensaje de carga mientras se obtienen los datos
   }
 
-  if (error) {
-    return <div>{error}</div>; // Mensaje de error si ocurre algún problema
+  if (driverError) {
+    return <div>{driverError}</div>; // Mensaje de error si ocurre algún problema
   }
 
   // Verifica que `driver` tenga todas las propiedades necesarias antes de renderizar
@@ -65,7 +72,7 @@ export const Detail = () => {
     image = defaultImage,
     description = "No disponible",
     teams = [],
-  } = driver || {};
+  } = selectedDriver || {};
 
   return (
     <div className="detail">

@@ -1,56 +1,56 @@
-import React, { useEffect, useState } from "react";
+// src/components/Home.jsx
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./Home.css";
 import { NavBar } from "../navbar/NavBar";
 import Service from "../service/Service";
 import { Drivers } from "./Drivers";
 import { Link } from "react-router-dom";
+import {
+  setDrivers,
+  setFilteredDrivers,
+  setCurrentPage,
+  setSearchTerm,
+  setSelectedTeam,
+  setSortOrder,
+  setSortBy
+} from "../redux/redux";
 
 export const Home = () => {
-  // Estados para gestionar los datos de los conductores, filtros, y paginación
-  const [drivers, setDrivers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredDrivers, setFilteredDrivers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [selectedTeam, setSelectedTeam] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [sortBy, setSortBy] = useState("name");
-  const [teams, setTeams] = useState([]);
-
-  // Efecto para cargar los datos de los conductores al montar el componente
+  const dispatch = useDispatch(); // Hook para despachar acciones a Redux
+  const {
+    drivers,
+    filteredDrivers,
+    currentPage,
+    totalPages,
+    searchTerm,
+    selectedTeam,
+    sortOrder,
+    sortBy,
+    teams
+  } = useSelector((state) => state.drivers); // Hook para seleccionar el estado de Redux
   useEffect(() => {
-    fetchDrivers();
+    fetchDrivers(); // Carga los conductores al montar el componente
   }, []);
-
-  // Efecto para aplicar filtros y ordenamientos cuando cambian los estados relacionados
   useEffect(() => {
-    applyFiltersAndSorting();
+    applyFiltersAndSorting(); // Aplica filtros y ordenamiento cuando cambian filtros o el listado de conductores
   }, [selectedTeam, sortOrder, sortBy, drivers]);
 
-  // Función para obtener los datos de los conductores desde el servicio
   const fetchDrivers = async () => {
     try {
-      const response = await Service.allDrivers();
+      const response = await Service.allDrivers(); // Obtiene la lista de conductores desde el servicio
       const driversData = response.respuesta;
-      console.log("Fetched drivers:", driversData);
-      setDrivers(driversData);
-      setFilteredDrivers(driversData);
-      // Extraer equipos únicos para los filtros
-      setTeams([...new Set(driversData.flatMap((driver) => driver.teams))]);
-      setTotalPages(Math.ceil(driversData.length / 15)); // Establecer el número total de páginas
+      dispatch(setDrivers(driversData)); // Actualiza el estado global con los conductores
     } catch (error) {
       console.log("Error al cargar los conductores", error);
     }
   };
 
-  // Función para aplicar filtros y ordenamientos a los datos de los conductores
   const applyFiltersAndSorting = () => {
-    // Filtrar por equipo seleccionado
     let results = drivers.filter((driver) =>
       selectedTeam ? driver.teams.includes(selectedTeam) : true
     );
 
-    // Ordenar según el criterio seleccionado
     if (sortBy === "name") {
       results.sort((a, b) => {
         if (a.name < b.name) return sortOrder === "asc" ? -1 : 1;
@@ -65,12 +65,9 @@ export const Home = () => {
       });
     }
 
-    setFilteredDrivers(results);
-    setTotalPages(Math.ceil(results.length / 15)); // Actualizar el número total de páginas después de filtrar y ordenar
-    setCurrentPage(1); // Reiniciar la página actual a la primera
+    dispatch(setFilteredDrivers(results)); // Actualiza el estado global con los conductores filtrados y ordenados
   };
 
-  // Función para manejar la búsqueda de conductores por nombre
   const handleSearch = async () => {
     try {
       const response = await fetch(
@@ -79,48 +76,40 @@ export const Home = () => {
       const result = await response.json();
 
       if (Array.isArray(result.answer)) {
-        setDrivers(result.answer);
-        applyFiltersAndSorting(); // Aplicar filtros y ordenamientos a los resultados de búsqueda
+        dispatch(setDrivers(result.answer)); // Actualiza el estado global con los resultados de búsqueda
+        applyFiltersAndSorting(); // Vuelve a aplicar filtros y ordenamiento
       } else {
         console.log("El formato de los resultados no es el esperado", result);
-        setDrivers([]);
-        setFilteredDrivers([]);
-        setTotalPages(1);
-        setCurrentPage(1);
+        dispatch(setDrivers([])); // Limpia la lista de conductores si los resultados no son los esperados
+        dispatch(setFilteredDrivers([]));
       }
     } catch (error) {
       console.log("Error al buscar conductores", error);
-      setDrivers([]);
-      setFilteredDrivers([]);
-      setTotalPages(1);
-      setCurrentPage(1);
+      dispatch(setDrivers([])); // Limpia la lista de conductores en caso de error
+      dispatch(setFilteredDrivers([]));
     }
   };
 
-  // Función para manejar el cambio en el campo de búsqueda
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+    dispatch(setSearchTerm(e.target.value)); // Actualiza el término de búsqueda en el estado global
   };
 
-  // Función para manejar el cambio de página en la paginación
   const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+    if (page < 1 || page > totalPages) return; // Valida la página
+    dispatch(setCurrentPage(page)); // Actualiza la página actual en el estado global
   };
 
-  // Función para obtener los conductores de la página actual
   const getPaginatedDrivers = () => {
-    const startIndex = (currentPage - 1) * 15; // Cambiado de 9 a 15 para ajustar el número de elementos por página
-    const endIndex = startIndex + 15;
-    return filteredDrivers.slice(startIndex, endIndex);
+    const startIndex = (currentPage - 1) * 9; // Calcula el índice inicial para la página actual
+    const endIndex = startIndex + 9; // Calcula el índice final
+    return filteredDrivers.slice(startIndex, endIndex); // Devuelve los conductores correspondientes a la página actual
   };
 
-  // Función para limpiar la búsqueda y restablecer los filtros
   const handleClearSearch = () => {
-    setSearchTerm("");
-    setSelectedTeam("");
-    setCurrentPage(1);
-    fetchDrivers(); // Volver a cargar los datos de los conductores para restablecer el estado
+    dispatch(setSearchTerm("")); // Limpia el término de búsqueda
+    dispatch(setSelectedTeam("")); // Limpia el equipo seleccionado
+    dispatch(setCurrentPage(1)); // Reinicia la página a la primera
+    fetchDrivers(); // Vuelve a cargar todos los conductores
   };
 
   return (
@@ -133,7 +122,7 @@ export const Home = () => {
               <label>Filtrar por equipo:</label>
               <select
                 value={selectedTeam}
-                onChange={(e) => setSelectedTeam(e.target.value)}
+                onChange={(e) => dispatch(setSelectedTeam(e.target.value))} // Actualiza el equipo seleccionado en el estado global
                 className="todos"
               >
                 <option value="">Todos</option>
@@ -149,7 +138,7 @@ export const Home = () => {
               <label>Ordenar por:</label>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => dispatch(setSortBy(e.target.value))} // Actualiza el criterio de clasificación en el estado global
                 className="todos"
               >
                 <option value="name">Nombre</option>
@@ -157,7 +146,7 @@ export const Home = () => {
               </select>
               <select
                 value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
+                onChange={(e) => dispatch(setSortOrder(e.target.value))} // Actualiza el orden de clasificación en el estado global
                 className="todos"
               >
                 <option value="asc">Ascendente</option>
@@ -172,7 +161,7 @@ export const Home = () => {
             <input
               type="text"
               value={searchTerm}
-              onChange={handleSearchChange}
+              onChange={handleSearchChange} // Actualiza el término de búsqueda en el estado global
               placeholder="Buscar por nombre"
               className="sea"
             />
@@ -182,10 +171,10 @@ export const Home = () => {
         </div>
         <br />
         <Drivers
-          drivers={getPaginatedDrivers()}
+          drivers={getPaginatedDrivers()} // Pasa los conductores paginados al componente Drivers
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={handlePageChange}
+          onPageChange={handlePageChange} // Pasa la función para cambiar de página al componente Drivers
         />
       </div>
     </div>

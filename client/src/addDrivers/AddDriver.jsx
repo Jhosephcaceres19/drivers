@@ -4,6 +4,7 @@ import "./AddDriver.css";
 import { NavBar } from "../navbar/NavBar";
 
 export const AddDriver = () => {
+  // Datos iniciales del formulario
   const initialFormData = {
     forename: "",
     surname: "",
@@ -14,31 +15,56 @@ export const AddDriver = () => {
     dob: "",
   };
 
+  // Estados para los datos del formulario y los errores de validación
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
 
+  // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Crear un nuevo objeto de errores basado en el estado actual
+    const newErrors = { ...errors };
+    
+    // Validar campos específicos
+    if (name === "forename" || name === "surname" || name === "nationality") {
+      // Validar que el campo contenga solo letras
+      if (!/^[a-zA-Z\s]+$/.test(value)) {
+        newErrors[name] = "El campo debe contener solo letras";
+      } else {
+        delete newErrors[name];
+      }
+    } else if (name === "image") {
+      // Validación básica de URL
+      try {
+        new URL(value);
+        delete newErrors[name];
+      } catch {
+        newErrors[name] = "URL de imagen no válida";
+      }
+    }
+
+    // Actualizar los datos del formulario y los errores
     setFormData({
       ...formData,
       [name]: value,
     });
-    // Clear error for the field if it becomes valid
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: "",
-      });
-    }
+
+    // Limpiar el error del campo si se vuelve válido
+    setErrors(newErrors);
   };
 
+  // Maneja los cambios en el campo de equipos
   const handleTeamsChange = (e) => {
     const { value } = e.target;
+
+    // Actualizar los equipos en el estado del formulario
     setFormData({
       ...formData,
-      teams: value.split(","),
+      teams: value.split(",").map(team => team.trim()).filter(team => team),
     });
-    // Clear error for the teams field if it becomes valid
+
+    // Limpiar el error para el campo de equipos si se vuelve válido
     if (errors["teams"]) {
       setErrors({
         ...errors,
@@ -47,28 +73,34 @@ export const AddDriver = () => {
     }
   };
 
+  // Valida el formulario antes de enviar
   const validateForm = () => {
     const newErrors = {};
-    // Check if required fields are empty
+
+    // Verificar si los campos obligatorios están vacíos
     if (!formData.forename) newErrors.forename = "Nombre es obligatorio";
     if (!formData.surname) newErrors.surname = "Apellido es obligatorio";
     if (!formData.description) newErrors.description = "Descripción es obligatoria";
     if (!formData.image) newErrors.image = "URL de imagen es obligatoria";
     if (!formData.nationality) newErrors.nationality = "Nacionalidad es obligatoria";
     if (!formData.dob) newErrors.dob = "Fecha de nacimiento es obligatoria";
-    // Check if teams are empty
-    if (formData.teams.length === 0 || formData.teams[0] === "") newErrors.teams = "Al menos un equipo es obligatorio";
 
+    // Verificar si hay equipos vacíos
+    if (formData.teams.length === 0) newErrors.teams = "Al menos un equipo es obligatorio";
+
+    // Actualizar el estado de errores y devolver si no hay errores
     setErrors(newErrors);
-    // Return true if no errors
     return Object.keys(newErrors).length === 0;
   };
 
+  // Maneja la creación del conductor
   const addDriver = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return; // Stop form submission if validation fails
+    // Validar el formulario antes de enviar
+    if (!validateForm()) return; 
 
     try {
+      // Llamar al servicio para crear el conductor
       const response = await Service.createDrivers(
         formData.forename,
         formData.surname,
@@ -80,6 +112,7 @@ export const AddDriver = () => {
       );
       if (response) {
         alert("Driver creado correctamente");
+        // Restablecer los datos del formulario después de la creación
         setFormData(initialFormData);
       }
     } catch (error) {
@@ -91,7 +124,7 @@ export const AddDriver = () => {
   return (
     <div>
       <NavBar />
-      <form onSubmit={addDriver}>
+      <form onSubmit={addDriver} className="form-add">
         <div>
           <label>
             NOMBRE:
@@ -118,7 +151,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            DESCRIPCION:
+            DESCRIPCIÓN:
             <input
               type="text"
               name="description"
@@ -166,7 +199,7 @@ export const AddDriver = () => {
         </div>
         <div>
           <label>
-            FECHA DE NACIMINETO:
+            FECHA DE NACIMIENTO:
             <input
               type="date"
               name="dob"
@@ -176,7 +209,7 @@ export const AddDriver = () => {
             {errors.dob && <span className="error">{errors.dob}</span>}
           </label>
         </div>
-        <button type="submit">ADD DRIVER</button>
+        <button type="submit">CREAR DRIVER</button>
       </form>
     </div>
   );
